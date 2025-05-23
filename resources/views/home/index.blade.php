@@ -62,7 +62,7 @@
                     <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
                 </nav>
 
-                <a class="btn-book-a-table" href="#menu">Pesan Sekarang</a>
+                <a class="btn-book-a-table" href="https://order.bicopicoffe.com/">Pesan Sekarang</a>
 
             </div>
 
