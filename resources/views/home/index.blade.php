@@ -402,8 +402,7 @@
                     <div>
                         <h4>Jam Buka</h4>
                         <p>
-                            <strong>Rabu-Senin:</strong> <span>{{ $contact->jam_buka }}</span><br>
-                            <strong>Selasa</strong>: <span>Tutup</span>
+                            <strong>Senin-Minggu:</strong> <span>{{ $contact->jam_buka }}</span><br>
                         </p>
                     </div>
                 </div>
