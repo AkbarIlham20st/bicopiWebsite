@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        REPOSITORY_NAME = 'https://github.com/BangEjak04/acs-docker.git'
+        REPOSITORY_NAME = 'https://github.com/AkbarIlham20st/bicopiWebsite.git'
         BRANCH = 'main'
     }
 
