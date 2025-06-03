@@ -14,13 +14,8 @@ pipeline {
                 script {
                     echo '🧹 Cleaning workspace and preparing environment...'
                     
-                    // Clean workspace manually
-                    sh '''
-                        echo "Cleaning workspace..."
-                        rm -rf .git .env* node_modules vendor storage/logs/* storage/framework/cache/* storage/framework/sessions/* storage/framework/views/* 2>/dev/null || true
-                        find . -name "*.log" -delete 2>/dev/null || true
-                        ls -la
-                    '''
+                    // Clean workspace
+                    deleteDir()
                     
                     // Clone repository
                     git branch: "${BRANCH}", url: "${REPOSITORY_NAME}"
@@ -28,15 +23,9 @@ pipeline {
                     // Ensure docker group permissions (run once)
                     sh '''
                         if ! groups $USER | grep -q docker; then
-                            echo "⚠️  Current user not in docker group. Checking if we can run docker..."
-                            if ! docker --version >/dev/null 2>&1; then
-                                echo "❌ Docker not accessible. Please add user to docker group:"
-                                echo "   sudo usermod -aG docker \$USER"
-                                echo "   Then restart Jenkins service"
-                                exit 1
-                            fi
-                        else
-                            echo "✅ User is in docker group"
+                            echo "Adding user to docker group..."
+                            sudo usermod -aG docker $USER
+                            echo "⚠️  User added to docker group. Pipeline may need restart for changes to take effect."
                         fi
                     '''
                 }
@@ -239,16 +228,9 @@ pipeline {
         
         cleanup {
             script {
+                // Clean up workspace but keep containers running
                 echo "🧹 Cleaning up workspace..."
-                
-                // Manual cleanup instead of deleteDir()
-                sh '''
-                    echo "Cleaning temporary files..."
-                    rm -rf node_modules/.cache 2>/dev/null || true
-                    rm -rf vendor/bin/.phpunit.result.cache 2>/dev/null || true
-                    find storage/logs -name "*.log" -mtime +7 -delete 2>/dev/null || true
-                    echo "✅ Cleanup completed"
-                '''
+                // Note: Don't deleteDir() here to keep the application running
             }
         }
     }
