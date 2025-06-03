@@ -14,13 +14,13 @@ pipeline {
                     echo 'Building...'
                     git branch: "$BRANCH", url: "$REPOSITORY_NAME"
                     sh 'cp .env.example .env'
-                    sh 'docker compose down'
-                    sh 'docker compose up -d --build'
-                    sh 'docker compose exec -T php composer install'
-                    sh 'docker compose exec -T php npm install'
-                    sh 'docker compose exec -T php php artisan key:generate'
-                    sh 'docker compose exec -T php php artisan migrate:fresh --seed'
-                    sh 'docker compose exec -T php npm run build'
+                    sh 'sudo docker compose down'
+                    sh 'sudo docker compose up -d --build'
+                    sh 'sudo docker compose exec -T php composer install'
+                    sh 'sudo docker compose exec -T php npm install'
+                    sh 'sudo docker compose exec -T php php artisan key:generate'
+                    sh 'sudo docker compose exec -T php php artisan migrate:fresh --seed'
+                    sh 'sudo docker compose exec -T php npm run build'
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
                 script {
                     // Run tests
                     echo 'Testing...'
-                    sh 'docker compose exec -T php php artisan test'
+                    sh 'sudo docker compose exec -T php php artisan test'
                 }
             }
         }
@@ -49,7 +49,7 @@ pipeline {
         }
         failure {
             echo "❌ Deployment failed! Check logs for details."
-            sh 'docker compose logs'
+            sh 'sudo docker compose logs'
         }
     }
 }
