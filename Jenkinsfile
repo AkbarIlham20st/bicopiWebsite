@@ -16,11 +16,11 @@ pipeline {
                     sh 'cp .env.example .env'
                     sh 'docker compose down'
                     sh 'docker compose up -d --build'
-                    sh 'docker-compose exec -T php composer install'
-                    sh 'docker-compose exec -T php npm install'
-                    sh 'docker-compose exec -T php php artisan key:generate'
-                    sh 'docker-compose exec -T php php artisan migrate:fresh --seed'
-                    sh 'docker-compose exec -T php npm run build'
+                    sh 'docker compose exec -T php composer install'
+                    sh 'docker compose exec -T php npm install'
+                    sh 'docker compose exec -T php php artisan key:generate'
+                    sh 'docker compose exec -T php php artisan migrate:fresh --seed'
+                    sh 'docker compose exec -T php npm run build'
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
                 script {
                     // Run tests
                     echo 'Testing...'
-                    sh 'docker-compose exec -T php php artisan test'
+                    sh 'docker compose exec -T php php artisan test'
                 }
             }
         }
